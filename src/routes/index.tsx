@@ -73,7 +73,7 @@ function Index() {
         />
         {error && <ErrorMessage message={error} />}
 
-        {ranking.length > 0 && (
+        {Array.isArray(ranking) && ranking.length > 0 && (
           <div className="mt-10 space-y-4 animate-fade-in">
             <h2 className="font-display text-xl font-medium text-[#F0EDE8]">
               Ranking de prioridade
@@ -81,7 +81,7 @@ function Index() {
             {ranking.map((item, i) => (
               <RankingCard key={i} item={item} position={i} />
             ))}
-            <ActionReport item={ranking[0]} />
+            {ranking[0] && <ActionReport item={ranking[0]} />}
           </div>
         )}
       </div>
