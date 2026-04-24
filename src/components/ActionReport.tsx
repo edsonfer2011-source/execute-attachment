@@ -5,7 +5,8 @@ interface Props {
 }
 
 export default function ActionReport({ item }: Props) {
-  const phases = Object.values(item.plano_acao) as Fase[];
+  const phases = (item?.plano_acao ? Object.values(item.plano_acao) : []) as Fase[];
+  const validPhases = phases.filter((p): p is Fase => !!p && Array.isArray(p.acoes));
 
   const handlePrint = () => window.print();
 
