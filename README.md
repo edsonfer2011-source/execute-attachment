@@ -12,9 +12,7 @@ Aplicativo leve para captura, análise e priorização estratégica de ideias de
 
 ## 📸 Screenshot
 
-![Screenshot do Hub de Inovação](./docs/screenshot-placeholder.png)
-
-> _Substitua a imagem acima por um screenshot real do app em `docs/screenshot-placeholder.png`._
+![Screenshot do Hub de Inovação](./docs/screenshot.png)
 
 ## 🚀 Instalação
 
