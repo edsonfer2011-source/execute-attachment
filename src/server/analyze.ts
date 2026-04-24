@@ -138,13 +138,54 @@ export const analyzeIdeasFn = createServerFn({ method: "POST" })
       throw new Error("Falha ao consultar a IA. Tente novamente.");
     }
 
-    const json = await res.json();
-    const call = json?.choices?.[0]?.message?.tool_calls?.[0];
-    const argsStr = call?.function?.arguments;
-    if (!argsStr) throw new Error("Resposta da IA sem dados estruturados");
+    const rawText = await res.text();
+    console.log("[analyzeIdeas] Raw AI gateway response:", rawText);
 
-    const parsed = JSON.parse(argsStr) as ApiResponse;
-    parsed.ranking.sort((a, b) => b.score_total - a.score_total);
-    parsed.ranking.forEach((it, i) => (it.rank = i + 1));
+    let json: unknown;
+    try {
+      json = JSON.parse(rawText);
+    } catch (e) {
+      console.error("[analyzeIdeas] Failed to parse gateway JSON:", e);
+      throw new Error("Resposta da IA em formato inesperado. Tente novamente.");
+    }
+
+    const choice = (json as { choices?: Array<{ message?: { tool_calls?: Array<{ function?: { arguments?: string } }>; content?: string } }> })
+      ?.choices?.[0]?.message;
+    let argsStr = choice?.tool_calls?.[0]?.function?.arguments;
+
+    // Fallback: try parsing message.content if tool_calls missing
+    if (!argsStr && choice?.content) {
+      const cleaned = choice.content.replace(/```json|```/g, "").trim();
+      argsStr = cleaned;
+    }
+
+    if (!argsStr) {
+      console.error("[analyzeIdeas] No structured args in response:", json);
+      throw new Error("A IA não retornou dados estruturados. Tente novamente.");
+    }
+
+    let parsed: ApiResponse;
+    try {
+      parsed = JSON.parse(argsStr) as ApiResponse;
+    } catch (e) {
+      console.error("[analyzeIdeas] Failed to parse tool args:", e, argsStr);
+      throw new Error("Resposta da IA malformada. Tente novamente.");
+    }
+
+    if (!parsed || !Array.isArray(parsed.ranking) || parsed.ranking.length === 0) {
+      console.error("[analyzeIdeas] Missing/invalid ranking:", parsed);
+      throw new Error("A IA não retornou um ranking válido. Tente novamente.");
+    }
+
+    parsed.ranking.sort((a, b) => (b.score_total ?? 0) - (a.score_total ?? 0));
+    parsed.ranking.forEach((it, i) => {
+      it.rank = i + 1;
+      it.metricas = it.metricas ?? {
+        potencial_mercado: 0,
+        viabilidade: 0,
+        inovacao: 0,
+        urgencia: 0,
+      };
+    });
     return parsed;
   });
