@@ -10,11 +10,30 @@ Aplicativo leve para captura, análise e priorização estratégica de ideias de
 - 🗺️ Plano de ação dividido em fases (curto, médio e longo prazo)
 - 🎨 Interface moderna, responsiva e acessível
 
+## 🌐 Demo Online
+
+👉 **[Acessar o app ao vivo](https://id-preview--ddc7b553-7b83-4142-b2dd-1d9033193c1d.lovable.app)**
+
+> A URL final (`.lovable.app`) é gerada após a publicação pelo botão **Publish** no editor da Lovable.
+
 ## 📸 Screenshot
 
 ![Screenshot do Hub de Inovação](./docs/screenshot.png)
 
-## 🚀 Instalação
+## 🚀 Publicação
+
+Este app utiliza **TanStack Start** com **SSR + server functions** para proteger a chave da IA no servidor. Por isso, **não é compatível com GitHub Pages** (que só hospeda arquivos estáticos).
+
+A forma recomendada de publicar é direto pela Lovable:
+
+1. Abra o projeto no editor da Lovable
+2. Clique em **Publish** (canto superior direito no desktop, ou menu `…` no mobile)
+3. Sua URL pública `.lovable.app` será gerada automaticamente
+4. Opcional: conecte um domínio próprio em **Settings → Domains**
+
+A chave da IA fica protegida nos secrets do servidor — nunca é exposta ao navegador.
+
+## 🚀 Instalação local
 
 Pré-requisitos: **Node.js 18+** e **npm** (ou bun).
 
