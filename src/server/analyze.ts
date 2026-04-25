@@ -109,18 +109,6 @@ const TOOL = {
         },
       },
       required: ["ranking"],
-      $defs: {
-        fase: {
-          type: "object",
-          properties: {
-            nome: { type: "string" },
-            cor: { type: "string" },
-            acoes: { type: "array", items: { type: "string" } },
-          },
-          required: ["nome", "cor", "acoes"],
-          additionalProperties: false,
-        },
-      },
       additionalProperties: false,
     },
   },
