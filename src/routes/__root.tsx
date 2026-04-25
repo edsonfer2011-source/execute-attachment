@@ -29,14 +29,18 @@ export const Route = createRootRoute({
     meta: [
       { charSet: "utf-8" },
       { name: "viewport", content: "width=device-width, initial-scale=1" },
-      { title: "Lovable App" },
-      { name: "description", content: "Lovable Generated Project" },
+      { title: "Hub Inovação" },
+      { name: "description", content: "Hub de Inovação — app para priorização inteligente de ideias de negócio com IA (Claude + React)" },
       { name: "author", content: "Lovable" },
-      { property: "og:title", content: "Lovable App" },
-      { property: "og:description", content: "Lovable Generated Project" },
+      { property: "og:title", content: "Hub Inovação" },
+      { property: "og:description", content: "Hub de Inovação — app para priorização inteligente de ideias de negócio com IA (Claude + React)" },
       { property: "og:type", content: "website" },
       { name: "twitter:card", content: "summary" },
       { name: "twitter:site", content: "@Lovable" },
+      { name: "twitter:title", content: "Hub Inovação" },
+      { name: "twitter:description", content: "Hub de Inovação — app para priorização inteligente de ideias de negócio com IA (Claude + React)" },
+      { property: "og:image", content: "https://storage.googleapis.com/gpt-engineer-file-uploads/attachments/og-images/fd4bb224-59cc-42c1-9ba9-0ab985afa9e7" },
+      { name: "twitter:image", content: "https://storage.googleapis.com/gpt-engineer-file-uploads/attachments/og-images/fd4bb224-59cc-42c1-9ba9-0ab985afa9e7" },
     ],
     links: [
       {
