@@ -12,9 +12,7 @@ Aplicativo leve para captura, análise e priorização estratégica de ideias de
 
 ## 🌐 Demo Online
 
-👉 **[Acessar o app ao vivo](https://id-preview--ddc7b553-7b83-4142-b2dd-1d9033193c1d.lovable.app)**
-
-> A URL final (`.lovable.app`) é gerada após a publicação pelo botão **Publish** no editor da Lovable.
+👉 **[hubdeinovacao.lovable.app](https://hubdeinovacao.lovable.app)**
 
 ## 📸 Screenshot
 
