@@ -50,10 +50,46 @@ const TOOL = {
               plano_acao: {
                 type: "object",
                 properties: {
-                  fase1: { $ref: "#/$defs/fase" },
-                  fase2: { $ref: "#/$defs/fase" },
-                  fase3: { $ref: "#/$defs/fase" },
-                  fase4: { $ref: "#/$defs/fase" },
+                  fase1: {
+                    type: "object",
+                    properties: {
+                      nome: { type: "string" },
+                      cor: { type: "string" },
+                      acoes: { type: "array", items: { type: "string" } },
+                    },
+                    required: ["nome", "cor", "acoes"],
+                    additionalProperties: false,
+                  },
+                  fase2: {
+                    type: "object",
+                    properties: {
+                      nome: { type: "string" },
+                      cor: { type: "string" },
+                      acoes: { type: "array", items: { type: "string" } },
+                    },
+                    required: ["nome", "cor", "acoes"],
+                    additionalProperties: false,
+                  },
+                  fase3: {
+                    type: "object",
+                    properties: {
+                      nome: { type: "string" },
+                      cor: { type: "string" },
+                      acoes: { type: "array", items: { type: "string" } },
+                    },
+                    required: ["nome", "cor", "acoes"],
+                    additionalProperties: false,
+                  },
+                  fase4: {
+                    type: "object",
+                    properties: {
+                      nome: { type: "string" },
+                      cor: { type: "string" },
+                      acoes: { type: "array", items: { type: "string" } },
+                    },
+                    required: ["nome", "cor", "acoes"],
+                    additionalProperties: false,
+                  },
                 },
                 required: ["fase1", "fase2", "fase3", "fase4"],
                 additionalProperties: false,
@@ -73,18 +109,6 @@ const TOOL = {
         },
       },
       required: ["ranking"],
-      $defs: {
-        fase: {
-          type: "object",
-          properties: {
-            nome: { type: "string" },
-            cor: { type: "string" },
-            acoes: { type: "array", items: { type: "string" } },
-          },
-          required: ["nome", "cor", "acoes"],
-          additionalProperties: false,
-        },
-      },
       additionalProperties: false,
     },
   },
@@ -178,6 +202,34 @@ export const analyzeIdeasFn = createServerFn({ method: "POST" })
     }
 
     parsed.ranking.sort((a, b) => (b.score_total ?? 0) - (a.score_total ?? 0));
+    const PHASE_DEFAULTS: Record<string, { nome: string; cor: string }> = {
+      fase1: { nome: "Validação (0-30 dias)", cor: "#C4834A" },
+      fase2: { nome: "Construção (1-3 meses)", cor: "#4A7A8A" },
+      fase3: { nome: "Lançamento (3-6 meses)", cor: "#5A8A4A" },
+      fase4: { nome: "Escala (6-12 meses)", cor: "#7A4A8A" },
+    };
+
+    const normalizePhase = (raw: unknown, key: string) => {
+      const def = PHASE_DEFAULTS[key];
+      if (raw && typeof raw === "object" && Array.isArray((raw as { acoes?: unknown }).acoes)) {
+        const obj = raw as { nome?: string; cor?: string; acoes: unknown[] };
+        return {
+          nome: obj.nome || def.nome,
+          cor: obj.cor || def.cor,
+          acoes: obj.acoes.map((a) => String(a)),
+        };
+      }
+      // String fallback: split numbered steps like "1. foo; 2. bar"
+      if (typeof raw === "string") {
+        const acoes = raw
+          .split(/\s*\d+[\.\)]\s*|\s*;\s*/)
+          .map((s) => s.trim())
+          .filter(Boolean);
+        return { nome: def.nome, cor: def.cor, acoes };
+      }
+      return { nome: def.nome, cor: def.cor, acoes: [] };
+    };
+
     parsed.ranking.forEach((it, i) => {
       it.rank = i + 1;
       it.metricas = it.metricas ?? {
@@ -185,6 +237,13 @@ export const analyzeIdeasFn = createServerFn({ method: "POST" })
         viabilidade: 0,
         inovacao: 0,
         urgencia: 0,
+      };
+      const pa = (it.plano_acao ?? {}) as unknown as Record<string, unknown>;
+      it.plano_acao = {
+        fase1: normalizePhase(pa.fase1, "fase1"),
+        fase2: normalizePhase(pa.fase2, "fase2"),
+        fase3: normalizePhase(pa.fase3, "fase3"),
+        fase4: normalizePhase(pa.fase4, "fase4"),
       };
     });
     return parsed;
