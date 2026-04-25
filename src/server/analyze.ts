@@ -50,10 +50,46 @@ const TOOL = {
               plano_acao: {
                 type: "object",
                 properties: {
-                  fase1: { $ref: "#/$defs/fase" },
-                  fase2: { $ref: "#/$defs/fase" },
-                  fase3: { $ref: "#/$defs/fase" },
-                  fase4: { $ref: "#/$defs/fase" },
+                  fase1: {
+                    type: "object",
+                    properties: {
+                      nome: { type: "string" },
+                      cor: { type: "string" },
+                      acoes: { type: "array", items: { type: "string" } },
+                    },
+                    required: ["nome", "cor", "acoes"],
+                    additionalProperties: false,
+                  },
+                  fase2: {
+                    type: "object",
+                    properties: {
+                      nome: { type: "string" },
+                      cor: { type: "string" },
+                      acoes: { type: "array", items: { type: "string" } },
+                    },
+                    required: ["nome", "cor", "acoes"],
+                    additionalProperties: false,
+                  },
+                  fase3: {
+                    type: "object",
+                    properties: {
+                      nome: { type: "string" },
+                      cor: { type: "string" },
+                      acoes: { type: "array", items: { type: "string" } },
+                    },
+                    required: ["nome", "cor", "acoes"],
+                    additionalProperties: false,
+                  },
+                  fase4: {
+                    type: "object",
+                    properties: {
+                      nome: { type: "string" },
+                      cor: { type: "string" },
+                      acoes: { type: "array", items: { type: "string" } },
+                    },
+                    required: ["nome", "cor", "acoes"],
+                    additionalProperties: false,
+                  },
                 },
                 required: ["fase1", "fase2", "fase3", "fase4"],
                 additionalProperties: false,
