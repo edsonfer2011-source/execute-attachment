@@ -238,7 +238,7 @@ export const analyzeIdeasFn = createServerFn({ method: "POST" })
         inovacao: 0,
         urgencia: 0,
       };
-      const pa = (it.plano_acao ?? {}) as Record<string, unknown>;
+      const pa = (it.plano_acao ?? {}) as unknown as Record<string, unknown>;
       it.plano_acao = {
         fase1: normalizePhase(pa.fase1, "fase1"),
         fase2: normalizePhase(pa.fase2, "fase2"),
